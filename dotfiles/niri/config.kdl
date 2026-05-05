@@ -1,0 +1,71 @@
+
+
+
+
+
+
+// --- Startup ---
+spawn-at-startup "noctalia-shell"
+spawn-at-startup "xwayland-satellite"
+
+binds {
+    // --- Basics ---
+    Super+Return { spawn "kitty"; }
+    
+    // Launcher Fix: Fehlende Anführungszeichen am Ende und korrekte Klammern
+    Super+Space { spawn "sh" "-c" "noctalia-shell ipc call launcher toggle"; }
+    
+    Super+Q { close-window; }
+    Super+Shift+E { quit; }
+
+    // --- Window Navigation ---
+    Super+Left  { focus-column-left; }
+    Super+Right { focus-column-right; }
+    Super+Down  { focus-window-down; }
+    Super+Up    { focus-window-up; }
+
+    // --- Layout & Workspace ---
+    Super+W { maximize-column; }
+
+    Super+1 { focus-workspace 1; }
+    Super+2 { focus-workspace 2; }
+    Super+3 { focus-workspace 3; }
+
+    Super+Shift+1 { move-column-to-workspace 1; }
+    Super+Shift+2 { move-column-to-workspace 2; }
+    Super+Shift+3 { move-column-to-workspace 3; }
+
+    // --- System Controls ---
+    Super+Slash { show-hotkey-overlay; }
+    Print { screenshot; }
+    Ctrl+Print { screenshot-screen; }
+    Alt+Print { screenshot-window; }
+    
+    //toggel fullscren
+    Mod+Shift+F { fullscreen-window; }
+
+}
+
+layout {
+    gaps 10
+    center-focused-column "never"
+
+
+    focus-ring { 
+        off
+    }
+    
+    border { 
+        off
+    }
+}
+
+window-rule {
+    geometry-corner-radius 12
+    clip-to-geometry true
+}
+
+output "Acer Technologies QG241Y G G50408D524215" {
+    mode "1920x1080@120.000"
+}
+
