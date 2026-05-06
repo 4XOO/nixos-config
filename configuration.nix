@@ -21,7 +21,6 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
-      <home-manager/nixos> 
     ];
 
   # Bootloader.
@@ -175,7 +174,8 @@
 	protonplus
 	yazi
 	asciiquarium
-	sl
+	prismlauncher
+
   #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
   #  wget
   ];
@@ -215,7 +215,10 @@ programs.fish.interactiveShellInit = ''
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
 
   #so nh knows were my configs are at
-  programs.nh.flake = "/home/david/nixos-config";
+  programs.nh = {
+    enable = true;
+    flake = "/home/david/nixos-config"; # Dein Pfad
+};
 
   #spicetify
   programs.spicetify = {
