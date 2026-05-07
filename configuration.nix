@@ -217,7 +217,7 @@ programs.fish.interactiveShellInit = ''
   #so nh knows were my configs are at
   programs.nh = {
     enable = true;
-    flake = "/home/david/nixos-config"; # Dein Pfad
+    flake = "/home/david/nixos-config/"; # Dein Pfad
 };
 
   #spicetify
