@@ -2,6 +2,7 @@
 
 
 
+
 # Edit this configuration file to define what should be installed on your system.  Help is available in the configuration.nix(5) man page and in the NixOS manual (accessible by 
 # running ‘nixos-help’).
 
@@ -15,13 +16,15 @@
     enable32Bit = true; # Required for 32-bit applications (e.g., Steam)
   };
 
-  # Load the amdgpu driver for X11/Wayland
+  # AMD CPU & GPU Konfiguration
+  hardware.cpu.amd.updateMicrocode = true;
+  
+  # Grafiktreiber für X11/Wayland (Mesa/amdgpu)
   services.xserver.videoDrivers = [ "amdgpu" ];
 
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-    ];
+  imports = [ 
+    ./hardware-configuration.nix 
+  ];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
