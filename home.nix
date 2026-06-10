@@ -3,13 +3,13 @@
   programs.kitty = {
     enable = true;
     settings = {
-      background_opacity = "0.2";
+      background_opacity = "0.4";
       confirm_os_window_close = 0;
     };
     
     extraConfig = ''
-      foreground      #dddddd
-      background      #880808
+      foreground      #ffffff
+      background      #b1b1b1
       cursor_shape    beam
       scrollback_lines 10000
     '';

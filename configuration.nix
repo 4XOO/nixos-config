@@ -3,6 +3,8 @@
 
 
 
+
+
 # Edit this configuration file to define what should be installed on your system.  Help is available in the configuration.nix(5) man page and in the NixOS manual (accessible by 
 # running ‘nixos-help’).
 
@@ -18,6 +20,9 @@
 
   # AMD CPU & GPU Konfiguration
   hardware.cpu.amd.updateMicrocode = true;
+
+  #Game Mode Enable
+  programs.gamemode.enable = true;
   
   # Grafiktreiber für X11/Wayland (Mesa/amdgpu)
   services.xserver.videoDrivers = [ "amdgpu" ];
@@ -26,11 +31,15 @@
     ./hardware-configuration.nix 
   ];
 
+  #Enable IPV6
+  networking.enableIPv6 = false;
+
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
   boot.kernelModules = [ "v4l2loopback" ];
+
   boot.extraModulePackages = [ config.boot.kernelPackages.v4l2loopback ];
 
   # Konfiguration für das v4l2loopback Modul
@@ -40,6 +49,9 @@
 
   networking.hostName = "nixos"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+
+  networking.nameservers = [ "1.1.1.1" "8.8.8.8" ];
+  networking.dhcpcd.extraConfig = "nohook resolv.conf";
 
   networking.firewall.allowedTCPPorts = [ 4747 ];
   networking.firewall.allowedUDPPorts = [ 4747 ];
@@ -153,7 +165,7 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-	inputs.noctalia.packages.${pkgs.system}.default
+	inputs.noctalia.packages.${pkgs.stdenv.hostPlatform.system}.default
 	git
 	kitty
 	xwayland
@@ -178,6 +190,14 @@
 	yazi
 	asciiquarium
 	prismlauncher
+	unzip
+	osu-lazer
+	obs-studio
+	vlc
+	vscodium
+	python3
+	r2modman
+	deadlock-mod-manager
 
   #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
   #  wget
@@ -194,22 +214,27 @@
   #GameScope  
   programs.gamescope = {
     enable = true;
-    capSysNice = true;
+    capSysNice = false;
 };
 
 #makeing Fastfetch auto use wen opening fish
 programs.fish.interactiveShellInit = ''
   fastfetch
 '';
-
+  
   #OpenRgb Enable
   services.hardware.openrgb.enable = true;
 
   #tailscale Enable
   services.tailscale.enable = true;
 
-  # Steam Enable
-  programs.steam.enable = true;
+programs.steam = {
+  enable = true;
+  # Erlaubt externen Proton-Versionen Zugriff auf System-Bibliotheken
+  extraCompatPackages = with pkgs; [
+    proton-ge-bin
+  ];
+};
 
   # Enable Fish Shell
   programs.fish.enable = true;
