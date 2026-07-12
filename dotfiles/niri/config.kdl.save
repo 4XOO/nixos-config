@@ -2,8 +2,6 @@
 
 
 
-
-
 // --- Startup ---
 spawn-at-startup "qs" "-c" "noctalia-shell"
 spawn-at-startup "xwayland-satellite"
@@ -48,7 +46,7 @@ binds {
 
 layout {
     gaps 10
-    center-focused-column "never"
+d    center-focused-column "never"
 
 
     focus-ring { 

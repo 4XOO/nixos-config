@@ -1,10 +1,5 @@
 
 
-
-
-
-
-
 # Edit this configuration file to define what should be installed on your system.  Help is available in the configuration.nix(5) man page and in the NixOS manual (accessible by 
 # running ‘nixos-help’).
 
@@ -67,6 +62,7 @@
   xdg.portal = {
     enable = true;
     extraPortals = [ pkgs.xdg-desktop-portal-gnome ];
+    config.common.default = [ "gtk" ];
   };
 
   #Flatpak enable
@@ -113,6 +109,14 @@
   services.displayManager.sddm.enable = true;
   services.desktopManager.plasma6.enable = true;
 
+  #sddm themes
+  programs.qylock = {
+   enable = true;
+   theme = "night-city";
+   sddm.enable = true;
+  };
+
+
   # Configure keymap in X11
   services.xserver.xkb = {
     layout = "de";
@@ -134,12 +138,17 @@
     alsa.support32Bit = true;
     pulse.enable = true;
     # If you want to use JACK applications, uncomment this
-    #jack.enable = true;
+    jack.enable = true;
 
     # use the example session manager (no others are packaged yet so this is enabled by default,
     # no need to redefine it in your config for now)
     #media-session.enable = true;
   };
+
+security.pam.loginLimits = [
+  { domain = "david"; type = "-"; item = "rtprio"; value = "95"; }
+  { domain = "david"; type = "-"; item = "memlock"; value = "unlimited"; }
+];
 
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
@@ -167,7 +176,6 @@
   environment.systemPackages = with pkgs; [
 	inputs.noctalia.packages.${pkgs.stdenv.hostPlatform.system}.default
 	git
-	kitty
 	xwayland
 	waybar
 	steam
@@ -198,10 +206,27 @@
 	python3
 	r2modman
 	deadlock-mod-manager
+	guitarix
+	qpwgraph
+	ghostty
+	myman
+	binutils
+	lunar-client
+	protontricks
+	p7zip
+	pipx
+	satisfactorymodmanager
+	fetch
+	
 
+	];
   #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
   #  wget
-  ];
+
+  nixpkgs.config.permittedInsecurePackages = [
+  "pnpm-10.29.2"
+];
+
 
   #wen ever openlap comes up in os switch turns doCheck into fals
   nixpkgs.config.packageOverrides = pkgs: {
@@ -218,10 +243,17 @@
 };
 
 #makeing Fastfetch auto use wen opening fish
-programs.fish.interactiveShellInit = ''
-  fastfetch
-'';
-  
+  programs.fish.interactiveShellInit = ''
+    fastfetch
+    '';
+
+  #makein so wen i type nirimod i open up nirimod in a nix shell
+  environment.shellAliases = {
+    nirimod = "nix run github:srinivasr/nirimod";
+     };
+
+
+
   #OpenRgb Enable
   services.hardware.openrgb.enable = true;
 
@@ -267,7 +299,7 @@ programs.steam = {
     ];
   };
 
-
+  programs.gdk-pixbuf.modulePackages = [ pkgs.librsvg ];
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
