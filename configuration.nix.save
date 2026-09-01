@@ -1,21 +1,7 @@
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-# Edit this configuration file to define what should be installed on your system.  
-# Help is available in the configuration.nix(5) man page and in the NixOS manual 
-# (accessible by running ‘nixos-help’).
+# Edit this configuration file to define what should be installed on your system.  Help is available in the configuration.nix(5) man page and in the NixOS manual (accessible by 
+# running ‘nixos-help’).
 
 { config, pkgs, inputs, ... }:
 
@@ -51,7 +37,6 @@
 
   boot.extraModulePackages = [ config.boot.kernelPackages.v4l2loopback ];
 
-
   # Konfiguration für das v4l2loopback Modul
   boot.extraModprobeConfig = ''
     options v4l2loopback devices=1 video_nr=1 card_label="Virtual Camera" exclusive_caps=1
@@ -63,8 +48,6 @@
   networking.nameservers = [ "1.1.1.1" "8.8.8.8" ];
   networking.dhcpcd.extraConfig = "nohook resolv.conf";
 
-  networking.firewall.enable = true;
-
   networking.firewall.allowedTCPPorts = [ 4747 ];
   networking.firewall.allowedUDPPorts = [ 4747 ];
 
@@ -74,16 +57,13 @@
 
   # Niri Compositor aktivieren
   programs.niri.enable = true;
-  services.displayManager.defaultSession = "niri";
 
   # Empfohlene Ergänzung für Wayland-Compositoren
   xdg.portal = {
-  enable = true;
-  # Use the standard GTK portal for broad compatibility
-  extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
-  # This must be a string (like "*"), not a list [ "gtk" ]
-  config.common.default = "*";
-};
+    enable = true;
+    extraPortals = [ pkgs.xdg-desktop-portal-gnome ];
+    config.common.default = [ "gtk" ];
+  };
 
   #Flatpak enable
   services.flatpak.enable = true;
@@ -91,22 +71,8 @@
   # Enable networking
   networking.networkmanager.enable = true;
 
-  #Enable Bluetooth support
-  #hardware.bluetooth.enable = true;
-  hardware.bluetooth = {
-  enable = true;
-  settings = {
-    General = {
-      # Verhindert, dass der PC die Joy-Cons wegen Timeout-Fehlern kickt
-      UserspaceHID = true;
-    };
-  };
-};
-
-
-  #Enable joycond daemon to pair and combine Joy-Cons
-  services.joycond.enable = true;
-
+  #bluetooth
+  hardware.bluetooth.enable = true;
 
   #services power
   services.power-profiles-daemon.enable = true;
@@ -197,7 +163,7 @@ security.pam.loginLimits = [
   users.users.david = {
     isNormalUser = true;
     description = "David";
-    extraGroups = [ "networkmanager" "wheel" "input" "wireshark" "adbusers" ];
+    extraGroups = [ "networkmanager" "wheel" ];
     shell = pkgs.fish;
     packages = with pkgs; [
       kdePackages.kate
@@ -217,6 +183,7 @@ security.pam.loginLimits = [
 	inputs.noctalia.packages.${pkgs.stdenv.hostPlatform.system}.default
 	git
 	xwayland
+	waybar
 	steam
 	vesktop
 	btop
@@ -227,6 +194,7 @@ security.pam.loginLimits = [
 	fastfetch
 	xwayland-satellite
 	hyfetch
+	linux-wallpaperengine
 	droidcam
 	lutris
 	tailscale
@@ -259,49 +227,24 @@ security.pam.loginLimits = [
 	pipx
 	satisfactorymodmanager
 	fetch
-	baobab	
-	util-linux
-	gtk3
-	fetch
-	wireshark
-	easyeffects
-	appimage-run
-	scrcpy
-	android-tools
-	pavucontrol
-	usb-modeswitch
-	oversteer
-	steamtinkerlaunch
+	
 
 	];
   #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
   #  wget
-  # for fonts
-
-  fonts.packages = with pkgs; [
-	
-	maple-mono.NF-unhinted
-	];   
 
   nixpkgs.config.permittedInsecurePackages = [
   "pnpm-10.29.2"
 ];
 
 
-  #wireshark enable
-  programs.wireshark.enable = true;
-
+  #wen ever openlap comes up in os switch turns doCheck into fals
   nixpkgs.config.packageOverrides = pkgs: {
-    appimage-run = pkgs.appimage-run.override {
-      extraPkgs = pkgs: with pkgs; [ libepoxy ];
-    };
-
     openldap = pkgs.openldap.overrideAttrs (oldAttrs: {
       doCheck = false;
       doInstallCheck = false;
     });
   };
-
 
   #GameScope  
   programs.gamescope = {
@@ -317,9 +260,6 @@ security.pam.loginLimits = [
   #makein so wen i type nirimod i open up nirimod in a nix shell
   environment.shellAliases = {
     nirimod = "nix run github:srinivasr/nirimod";
-    nixconfig = "nano /home/david/nixos-config/configuration.nix";
-    homeconfig = "nano /home/david/nixos-config/home.nix";
-    flaksconfi = "nano /home/david/nixos-config/flake.nix";
      };
 
 
@@ -348,6 +288,25 @@ programs.steam = {
     enable = true;
     flake = "/home/david/nixos-config/"; # Dein Pfad
 };
+
+  #spicetify
+  programs.spicetify = {
+    enable = true;
+    
+    # Das hier ist die magische Zeile gegen die blaue Leiste:
+    spotifyLaunchFlags = "--enable-features=UseOzonePlatform --ozone-platform=wayland";
+
+    # Wähle ein Theme und Farbschema (optional, aber schick)
+#    theme = inputs.spicetify-nix.legacyPackages.${pkgs.system}.themes.comfy;
+#    colorScheme = "rose-pine"; 
+
+    # Nützliche Erweiterungen
+    enabledExtensions = with inputs.spicetify-nix.legacyPackages.${pkgs.system}.extensions; [
+      adblock
+      hidePodcasts
+      shuffle # Besserer Shuffle-Algorithmus
+    ];
+  };
 
   programs.gdk-pixbuf.modulePackages = [ pkgs.librsvg ];
 

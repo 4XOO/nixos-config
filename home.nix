@@ -1,57 +1,52 @@
 
 
+{ config, pkgs, inputs, ... }:
 
-{ config, pkgs, ... }:
+let
+  spicePkgs = inputs.spicetify-nix.legacyPackages.${pkgs.system};
+in {
+  imports = [
+    inputs.spicetify-nix.homeManagerModules.default
+  ];
 
-{
   home.stateVersion = "25.11";
   home.enableNixpkgsReleaseCheck = false;
 
   programs.home-manager.enable = true;
 
-  programs.kitty = {
+  programs.ghostty = {
     enable = true;
 
     settings = {
-      background_opacity = "0.4";
-      confirm_os_window_close = 0;
-    };
+      background-opacity = "0.3";
 
-    extraConfig = ''
-      foreground      #ffffff
-      background      #b1b1b1
-      cursor_shape    beam
-      scrollback_lines 10000
-    '';
+      foreground = "#ffffff";
+      background = "#4D3F1E";
 
-    font = {
-      name = "JetBrainsMono Nerd Font";
-      size = 12;
+      gtk-titlebar = false;
+
+      cursor-style = "block";
+      font-family = "JetBrainsMono Nerd Font";
+      font-size = 12;
+
+      theme = "Catppuccin Mocha";
     };
   };
 
-programs.ghostty = {
-  enable = true;
+  programs.spicetify = {
+    enable = true;
+    enabledExtensions = with spicePkgs.extensions; [ adblockify hidePodcasts shuffle ];
 
-  settings = {
-    background-opacity = "0.4";
-
-    foreground = "#ffffff";
-    background = "#1a265a";
-
-    cursor-style = "block";   # or "bar", "underline", "block_hollow"
-    font-family = "JetBrainsMono Nerd Font";
-    font-size = 12;
-    
-    theme = "Catppuccin Mocha";
+    theme = {
+      name = "Liquify";
+      src = inputs.liquify-theme;
+      appendName = false;
+    };
   };
-};
+
   home.packages = with pkgs; [
     nerd-fonts.jetbrains-mono
     git
     htop
   ];
-
 }
-
-
