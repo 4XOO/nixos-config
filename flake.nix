@@ -1,21 +1,28 @@
 
+
+
 {
-  description = "Meine NixOS Flake Konfiguration mit Noctalia";
+  description = "your mom";
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     qylock.url = "github:Darkkal44/qylock";
 
-    # Home-Manager hinzufügen
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
     noctalia = {
-      url = "github:noctalia-dev/noctalia/v4.7.7";
+      url = "github:noctalia-dev/noctalia";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    noctalia-greeter = {
+      url = "github:noctalia-dev/noctalia-greeter";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     spicetify-nix.url = "github:Gerg-L/spicetify-nix";
 
     liquify-theme = {
@@ -30,17 +37,20 @@ outputs = { self, nixpkgs, home-manager, noctalia, spicetify-nix, qylock, ... }@
       modules = [
         ./configuration.nix
 
-        # HIER KORRIGIERT: Dieser Inline-Block löst die Endlosschleife auf!
         ({ ... }: {
           home-manager.extraSpecialArgs = { inherit inputs; };
         })
 
-        # Home-Manager Modul hinzufügen
+        # Home-Manager Modules
         home-manager.nixosModules.home-manager
+
+	# noctalia stuf
         noctalia.nixosModules.default
+	inputs.noctalia-greeter.nixosModules.default
+
         spicetify-nix.nixosModules.default
 
-        # Qylock Modul hier hinzufügen
+        # Qylock Modules
         qylock.nixosModules.default
       ];
     };

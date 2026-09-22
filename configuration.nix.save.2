@@ -3,6 +3,7 @@
 
 
 
+
 # Edit this configuration file to define what should be installed on your system.  
 # Help is available in the configuration.nix(5) man page and in the NixOS manual 
 # (accessible by running ‘nixos-help’).
@@ -55,16 +56,9 @@
 
   networking.firewall.enable = true;
 
-	networking.firewall.allowedTCPPorts = [
-	  9757
-	  4747
-	];
+  networking.firewall.allowedTCPPorts = [ 4747 ];
+  networking.firewall.allowedUDPPorts = [ 4747 ];
 
-	networking.firewall.allowedUDPPorts = [
-	  9757
-	  5353
-	  4747
-	];
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
@@ -80,7 +74,7 @@
   extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
   # This must be a string (like "*"), not a list [ "gtk" ]
   config.common.default = "*";
-	};
+};
 
   #Flatpak enable
   services.flatpak.enable = true;
@@ -194,7 +188,7 @@ security.pam.loginLimits = [
   users.users.david = {
     isNormalUser = true;
     description = "David";
-    extraGroups = [ "networkmanager" "wheel" "input" "uinput" "wireshark" "adbusers" ];
+    extraGroups = [ "networkmanager" "wheel" "input" "wireshark" "adbusers" ];
     shell = pkgs.fish;
     packages = with pkgs; [
     #  thunderbird
@@ -229,6 +223,7 @@ security.pam.loginLimits = [
 	unrar
 	heroic
 	protonplus
+	yazi
 	asciiquarium
 	prismlauncher
 	unzip
@@ -257,14 +252,12 @@ security.pam.loginLimits = [
 	baobab	
 	util-linux
 	gtk3
-	xdg-utils
 	fetch
 	wireshark
 	easyeffects
 	appimage-run
 	scrcpy
 	android-tools
-	vulkan-tools
 	pavucontrol
 	usb-modeswitch
 	oversteer
@@ -275,42 +268,11 @@ security.pam.loginLimits = [
 	hyprpicker
 	imagemagick
 	zbar
-	wl-clicker
-	portmaster
-	nemo 
-	ryubing
-
+	
 	];
   #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
   #  wget
   # for fonts
-
-  services.wivrn = {
-    enable = true;
-    openFirewall = true;
-  };
-
-
- nixpkgs.overlays = [
-  (final: prev: {
-    xwayland-satellite = prev.xwayland-satellite.overrideAttrs (old: rec {
-      version = "0.8.1";
-
-      src = final.fetchFromGitHub {
-        owner = "Supreeeme";
-        repo = "xwayland-satellite";
-        rev = "536bd32";
-        hash = "sha256-BUE41HjLIGPjq3U8VXPjf8asH8GaMI7FYdgrIHKFMXA=";
-      };
-
-      cargoDeps = final.rustPlatform.fetchCargoVendor {
-        inherit (old) pname;
-        inherit version src;
-        hash = "sha256-16L6gsvze+m7XCJlOA1lsPNELE3D364ef2FTdkh0rVY=";
-      };
-    });
-  })
-];
 
 
 	#nocralia greeter
@@ -339,12 +301,7 @@ security.pam.loginLimits = [
   nixpkgs.config.permittedInsecurePackages = [
   "pnpm-10.29.2"
 ];
-	
-	# portmaster enable
-	services.portmaster.enable = true;
 
-	# uinput enable
-	hardware.uinput.enable = true;
 
   #wireshark enable
   programs.wireshark.enable = true;
