@@ -3,6 +3,7 @@
 
 
 
+
 # Edit this configuration file to define what should be installed on your system.  
 # Help is available in the configuration.nix(5) man page and in the NixOS manual 
 # (accessible by running ‘nixos-help’).
@@ -36,7 +37,7 @@
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-
+  boot.supportedFilesystems = [ "nfs" ];
   boot.kernelModules = [ "v4l2loopback" ];
 
   boot.extraModulePackages = [ config.boot.kernelPackages.v4l2loopback ];
@@ -50,6 +51,7 @@
   networking.hostName = "nixos"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
+  networking.networkmanager.insertNameservers = [ "192.168.0.248" ];
   networking.nameservers = [ "1.1.1.1" "8.8.8.8" ];
   networking.dhcpcd.extraConfig = "nohook resolv.conf";
 
@@ -137,7 +139,7 @@
   services.xserver.enable = true;
 
   # Enable the KDE Plasma Desktop Environment.
-  services.desktopManager.plasma6.enable = true;
+  # services.desktopManager.plasma6.enable = true;
   
 # services.displayManager.sddm = {
 #  enable = true;
@@ -239,7 +241,6 @@ security.pam.loginLimits = [
 	 ];
 	})
 	vlc
-	vscodium
 	python3
 	r2modman
 	deadlock-mod-manager
@@ -277,13 +278,19 @@ security.pam.loginLimits = [
 	zbar
 	wl-clicker
 	portmaster
-	nemo 
+	kdePackages.dolphin
 	ryubing
-
+	google-chrome
+	kdePackages.kdenlive
+	glib
+	tigervnc
+	inputs.psysonic.packages.${pkgs.system}.psysonic
 	];
   #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
   #  wget
-  # for fonts
+
+  services.gvfs.enable = true;  
+  services.udisks2.enable = true;
 
   services.wivrn = {
     enable = true;

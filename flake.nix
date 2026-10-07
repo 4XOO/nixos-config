@@ -18,6 +18,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    psysonic= { 
+     url = "github:Psysonic/psysonic?ref=release";
+     inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     noctalia-greeter = {
       url = "github:noctalia-dev/noctalia-greeter";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -52,6 +57,8 @@ outputs = { self, nixpkgs, home-manager, noctalia, spicetify-nix, qylock, ... }@
 
         # Qylock Modules
         qylock.nixosModules.default
+
+
       ];
     };
   };

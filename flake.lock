@@ -41,11 +41,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1790110821,
-        "narHash": "sha256-4vgPxAtYGryB/9SZVFMrcRKmNcOqcN3+MwRJPTVpb1o=",
+        "lastModified": 1790128814,
+        "narHash": "sha256-6Gm9q+wW3E4Ey4F6wEbJAwaMsEK6hvCYfTW7yY64ZfA=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "a5768f1a46942657352e58037b7891bdcbc0741f",
+        "rev": "0b2f1129177f70c5f0f5d88bb53c49ca47d0bfc0",
         "type": "github"
       },
       "original": {
@@ -155,6 +155,27 @@
         "type": "github"
       }
     },
+    "psysonic": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1790283286,
+        "narHash": "sha256-Wsus0USgYV9NUsuxiM3u37RjnG1nQzWoTHO1PY3zuXQ=",
+        "owner": "Psysonic",
+        "repo": "psysonic",
+        "rev": "bd6c320d4b2761a98a197d509830de5ca3987448",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Psysonic",
+        "ref": "release",
+        "repo": "psysonic",
+        "type": "github"
+      }
+    },
     "qylock": {
       "inputs": {
         "flake-compat": "flake-compat",
@@ -182,6 +203,7 @@
         "nixpkgs": "nixpkgs",
         "noctalia": "noctalia",
         "noctalia-greeter": "noctalia-greeter",
+        "psysonic": "psysonic",
         "qylock": "qylock",
         "spicetify-nix": "spicetify-nix"
       }

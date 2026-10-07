@@ -1,5 +1,6 @@
 
 
+
 { config, pkgs, inputs, ... }:
 
 let
@@ -13,6 +14,14 @@ in {
   home.enableNixpkgsReleaseCheck = false;
 
   programs.home-manager.enable = true;
+
+  home.pointerCursor = {
+    gtk.enable = true;
+    x11.enable = true;
+    package = pkgs.bibata-cursors;
+    name = "Bibata-Modern-Classic";
+    size = 24; # Adjust size to your preference
+  };
 
   programs.ghostty = {
     enable = true;
@@ -48,5 +57,6 @@ in {
     nerd-fonts.jetbrains-mono
     git
     htop
+    bibata-cursors
   ];
 }
